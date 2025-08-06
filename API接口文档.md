@@ -129,7 +129,7 @@ GET /site/structure
     "source": {
       "_posts": {
         "type": "directory",
-        "children": ["hello-world.md", "my-first-post.md"],
+        "children": ["25080601.md", "25080602.md"],
         "count": 2
       },
       "images": {
@@ -183,18 +183,19 @@ GET /posts?page=1&size=10&category=技术&tag=Java&keyword=搜索关键词&statu
     "totalPages": 3,
     "posts": [
       {
-        "id": "hello-world",
+        "id": "25080601",
         "title": "Hello World",
-        "date": "2024-01-01 10:00:00",
-        "updated": "2024-01-02 15:30:00",
+        "date": "2025-08-06 10:00:00",
+        "updated": "2025-08-06 15:30:00",
         "categories": ["技术"],
         "tags": ["Hexo", "博客"],
         "excerpt": "这是文章摘要...",
         "status": "published",
-        "filename": "hello-world.md",
+        "filename": "25080601.md",
         "wordCount": 1200,
         "readTime": "5 min",
-        "cover": "/images/hello-world-cover.jpg"
+        "cover": "/images/25080601-cover.jpg",
+        "displayName": "2025年8月6日第1篇文章"
       }
     ]
   }
@@ -211,15 +212,15 @@ GET /posts/{id}
 {
   "code": 200,
   "data": {
-    "id": "hello-world",
+    "id": "25080601",
     "frontMatter": {
       "title": "Hello World",
-      "date": "2024-01-01 10:00:00",
-      "updated": "2024-01-02 15:30:00",
+      "date": "2025-08-06 10:00:00",
+      "updated": "2025-08-06 15:30:00",
       "categories": ["技术"],
       "tags": ["Hexo", "博客"],
-      "cover": "/images/cover.jpg",
-      "top_img": "/images/top.jpg",
+      "cover": "/images/25080601-cover.jpg",
+      "top_img": "/images/25080601-top.jpg",
       "description": "文章描述",
       "aside": true,
       "comments": true,
@@ -228,12 +229,13 @@ GET /posts/{id}
       "keywords": "Hexo,博客,技术"
     },
     "content": "# Hello World\n\n这是我的第一篇文章...",
-    "rawContent": "---\ntitle: Hello World\ndate: 2024-01-01 10:00:00\n---\n\n# Hello World\n\n这是我的第一篇文章...",
+    "rawContent": "---\ntitle: Hello World\ndate: 2025-08-06 10:00:00\n---\n\n# Hello World\n\n这是我的第一篇文章...",
     "htmlContent": "<h1>Hello World</h1><p>这是我的第一篇文章...</p>",
     "wordCount": 150,
     "readTime": "2 min",
-    "filename": "hello-world.md",
-    "path": "source/_posts/hello-world.md"
+    "filename": "25080601.md",
+    "path": "source/_posts/25080601.md",
+    "displayName": "2025年8月6日第1篇文章"
   }
 }
 ```
@@ -268,9 +270,10 @@ POST /posts
   "code": 200,
   "message": "文章创建成功",
   "data": {
-    "id": "new-post-2024-01-15",
-    "filename": "new-post-2024-01-15.md",
-    "path": "source/_posts/new-post-2024-01-15.md"
+    "id": "25080601",
+    "filename": "25080601.md",
+    "path": "source/_posts/25080601.md",
+    "displayName": "2025年8月6日第1篇文章"
   }
 }
 ```
@@ -304,7 +307,7 @@ POST /posts/batch
 ```json
 {
   "action": "delete", // delete, publish, draft, updateCategory, updateTag
-  "postIds": ["post1", "post2", "post3"],
+  "postIds": ["25080601", "25080602", "25080701"],
   "data": {
     "category": "新分类", // 仅在updateCategory时需要
     "tags": ["新标签1", "新标签2"] // 仅在updateTag时需要
@@ -328,6 +331,34 @@ POST /posts/search
 }
 ```
 
+### 3.8 获取下一个文章编号
+```http
+GET /posts/next-id?date=2025-08-06
+```
+
+**查询参数:**
+- `date`: 指定日期 (格式: YYYY-MM-DD, 可选，默认为当前日期)
+
+**响应示例:**
+```json
+{
+  "code": 200,
+  "data": {
+    "nextId": "25080603",
+    "date": "2025-08-06",
+    "sequenceNumber": 3,
+    "displayName": "2025年8月6日第3篇文章",
+    "todayCount": 2,
+    "filename": "25080603.md"
+  }
+}
+```
+
+**文件名规则说明:**
+- 格式: `YYMMDD + 两位序号`
+- 示例: `25080601` = 2025年8月6日第1篇
+- 自动递增当日序号，最大支持99篇/天
+
 ---
 
 ## 4. 分类和标签管理
@@ -345,7 +376,7 @@ GET /categories
     {
       "name": "技术",
       "count": 15,
-      "posts": ["post1", "post2"],
+      "posts": ["25080601", "25080602"],
       "slug": "tech",
       "parent": null,
       "children": ["前端", "后端"]
@@ -353,7 +384,7 @@ GET /categories
     {
       "name": "生活",
       "count": 8,
-      "posts": ["post3", "post4"],
+      "posts": ["25080603", "25080701"],
       "slug": "life",
       "parent": null,
       "children": []
@@ -375,14 +406,14 @@ GET /tags
     {
       "name": "JavaScript",
       "count": 12,
-      "posts": ["post1", "post5"],
+      "posts": ["25080601", "25080605"],
       "slug": "javascript",
       "color": "#f7df1e"
     },
     {
       "name": "Vue",
       "count": 8,
-      "posts": ["post2", "post6"],
+      "posts": ["25080602", "25080606"],
       "slug": "vue",
       "color": "#4fc08d"
     }
@@ -453,11 +484,11 @@ GET /files?path=source/_posts/hello-world.md
 {
   "code": 200,
   "data": {
-    "path": "source/_posts/hello-world.md",
+    "path": "source/_posts/25080601.md",
     "content": "文件原始内容",
     "encoding": "utf-8",
     "size": 1024,
-    "lastModified": "2024-01-01T10:00:00Z",
+    "lastModified": "2025-08-06T10:00:00Z",
     "isReadonly": false
   }
 }
@@ -471,7 +502,7 @@ PUT /files
 **请求参数:**
 ```json
 {
-  "path": "source/_posts/hello-world.md",
+  "path": "source/_posts/25080601.md",
   "content": "更新的文件内容",
   "encoding": "utf-8",
   "backup": true
@@ -675,9 +706,9 @@ GET /media?type=image&page=1&size=20&keyword=&sortBy=uploadDate&sortOrder=desc
         "size": 204800,
         "dimensions": "1920x1080",
         "mimeType": "image/jpeg",
-        "uploadDate": "2024-01-01T10:00:00Z",
+        "uploadDate": "2025-08-06T10:00:00Z",
         "isUsed": true,
-        "usedIn": ["post1", "post2"]
+        "usedIn": ["25080601", "25080602"]
       }
     ]
   }
@@ -696,7 +727,7 @@ DELETE /media/{fileId}
   "message": "文件删除成功",
   "data": {
     "deletedFile": "/images/old-image.jpg",
-    "affectedPosts": ["post1", "post2"]
+    "affectedPosts": ["25080601", "25080602"]
   }
 }
 ```
@@ -1300,11 +1331,11 @@ GET /logs?page=1&size=20&action=&startDate=2024-01-01&endDate=2024-01-31
         "action": "CREATE_POST",
         "description": "创建文章: Hello World",
         "details": {
-          "postId": "hello-world",
+          "postId": "25080601",
           "title": "Hello World"
         },
         "user": "admin",
-        "timestamp": "2024-01-01T10:00:00Z",
+        "timestamp": "2025-08-06T10:00:00Z",
         "ip": "192.168.1.100",
         "userAgent": "Mozilla/5.0..."
       }
@@ -1596,6 +1627,38 @@ message: 请输入密码查看          # 可选，加密提示信息
 - 静态资源CDN
 - 代码分割
 - 浏览器缓存
+
+---
+
+## 文件命名规范
+
+### 文章文件命名规则
+
+本系统采用 **年月日+序号** 的文件命名规范：
+
+#### 格式说明
+- **格式**: `YYMMDDXX.md`
+- **YY**: 年份后两位 (如 2025 → 25)
+- **MM**: 月份 (01-12)
+- **DD**: 日期 (01-31)
+- **XX**: 当日文章序号 (01-99)
+
+#### 示例说明
+- `25080601.md` = 2025年8月6日第1篇文章
+- `25080602.md` = 2025年8月6日第2篇文章
+- `25080701.md` = 2025年8月7日第1篇文章
+
+#### 优势特点
+1. **时间有序**: 文件名天然按时间排序
+2. **快速识别**: 一眼看出文章发布日期
+3. **避免冲突**: 同日文章自动递增序号
+4. **简洁高效**: 8位数字，简洁明了
+5. **扩展性强**: 最多支持99篇/天
+
+#### API支持
+- 使用 `GET /posts/next-id` 获取下一个文章编号
+- 系统自动检测当日已有文章数量并分配序号
+- 支持指定日期获取编号 (用于补发历史文章)
 
 ---
 
